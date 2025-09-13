@@ -1,0 +1,23 @@
+﻿namespace Project.EF
+{
+    public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IHttpContextAccessor httpContextAccessor)
+        : IdentityDbContext<ApplicationUser, ApplicationRole, string>(options)
+    {
+        private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            // Add your custom model configurations here  
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
+        }
+
+
+
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
+        public DbSet<ApplicationUser> Users { get; set; }
+        public DbSet<Service> Services { get; set; }
+
+
+    }
+}
