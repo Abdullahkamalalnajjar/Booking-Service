@@ -9,7 +9,7 @@ namespace Project.Data.Entities
         public string FullName => $"{FirstName} {LastName}";
         public bool IsDisable { get; set; } = false;
         public int? ServiceId { get; set; }
-        public Service? Service { get; set; }
+        public ServiceCategory? Service { get; set; }
         public List<RefreshToken>? RefreshTokens { get; set; } = new List<RefreshToken>();
     }
 }

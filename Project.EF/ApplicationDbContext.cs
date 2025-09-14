@@ -16,7 +16,12 @@
 
         public DbSet<RefreshToken> RefreshTokens { get; set; }
         public DbSet<ApplicationUser> Users { get; set; }
-        public DbSet<Service> Services { get; set; }
+        public DbSet<ServiceCategory> ServiceCategories { get; set; }
+        public DbSet<ServiceEntity> Services { get; set; }
+        public DbSet<ServiceImage> ServiceImages { get; set; }
+        public DbSet<ServiceFeature> ServiceFeatures { get; set; }
+        public DbSet<ServicePackage> ServicePackages { get; set; }
+        public DbSet<ServiceReview> ServiceReviews { get; set; }
 
 
     }
