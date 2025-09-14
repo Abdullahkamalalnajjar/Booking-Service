@@ -60,7 +60,7 @@ namespace Project.Service.Implementations
             Images = s.Images.Select(i => new ServiceImageDto
             {
                 Id = i.Id,
-                Url = i.Url
+                Url = i.ImageUrl
             }).ToList(),
             Packages = s.Packages.Select(p => new ServicePackageDto
             {

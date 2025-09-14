@@ -10,6 +10,10 @@ public class ServiceEntity
     public int Capacity { get; set; }
     public decimal Price { get; set; }
     public string Policies { get; set; } = null!;
+    // Owner (???? ??????)
+    public string UserId { get; set; } = null!;
+    public ApplicationUser user{ get; set; } = null!;
+
 
     public int ServiceCategoryId { get; set; }
     public ServiceCategory Category { get; set; } = null!;

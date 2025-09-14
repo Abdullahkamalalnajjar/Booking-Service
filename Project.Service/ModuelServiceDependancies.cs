@@ -14,6 +14,7 @@ namespace Project.Service
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IRoleService, RoleService>();
             services.AddTransient<IClaimService, ClaimService>();
+           services.AddTransient<IServiceEntityService, ServiceEntityService>();
 
 
             return services;

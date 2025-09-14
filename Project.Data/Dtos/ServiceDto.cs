@@ -1,4 +1,6 @@
-﻿namespace Project.Data.Dtos
+﻿using Microsoft.AspNetCore.Http;
+
+namespace Project.Data.Dtos
 {
     public class ServiceDto
     {
