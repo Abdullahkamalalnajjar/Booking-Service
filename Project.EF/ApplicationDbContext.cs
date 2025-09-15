@@ -22,6 +22,7 @@
         public DbSet<ServiceFeature> ServiceFeatures { get; set; }
         public DbSet<ServicePackage> ServicePackages { get; set; }
         public DbSet<ServiceReview> ServiceReviews { get; set; }
+        public DbSet<ServicePackageItem> ServicePackageItems { get; set; }
 
 
     }

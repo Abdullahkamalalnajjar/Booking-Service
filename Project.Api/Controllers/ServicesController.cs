@@ -1,9 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Project.Api.Base;
 using Project.Core.Features.Services.Commands.Models;
 using Project.Core.Features.Services.Queries.Models;
-using Project.Core.Features.Users.Commands.Models;
 
 namespace Project.Api.Controllers
 {
@@ -11,7 +9,7 @@ namespace Project.Api.Controllers
     public class ServicesController : AppBaseController
     {
         [HttpPost("CreateService")]
-        public async Task<IActionResult> CreateService([FromQuery] CreateServiceCommand command)
+        public async Task<IActionResult> CreateService([FromBody] CreateServiceCommand command)
         {
             var response = await Mediator.Send(command);
             return NewResult(response);
@@ -26,7 +24,7 @@ namespace Project.Api.Controllers
         }
 
         [HttpGet("GetServiceById")]
-        public async Task<IActionResult> GetServiceById([FromQuery]GetServiceByIdQuery query)
+        public async Task<IActionResult> GetServiceById([FromQuery] GetServiceByIdQuery query)
         {
             var response = await Mediator.Send(query);
             return NewResult(response);

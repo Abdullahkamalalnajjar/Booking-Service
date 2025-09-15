@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-
-namespace Project.Data.Dtos
+﻿namespace Project.Data.Dtos
 {
     public class ServiceDto
     {
@@ -23,20 +21,20 @@ namespace Project.Data.Dtos
     public class ServiceImageDto
     {
         public int Id { get; set; }
-        public string Url { get; set; } = null!;
+        public string Url { get; set; } 
     }
     public class ServiceFeatureDto
     {
         public int Id { get; set; }
-        public string Name { get; set; } = null!;
+        public string Name { get; set; } 
         public string? Icon { get; set; }
     }
     public class ServicePackageDto
     {
         public int Id { get; set; }
-        public string Title { get; set; } = null!;
+        public string Title { get; set; } 
         public decimal Price { get; set; }
-        public List<string> Items { get; set; } = new List<string>();
+        public List<ServicePackageItemDto> Items { get; set; } 
     }
     public class ServiceReviewDto
     {
@@ -45,5 +43,10 @@ namespace Project.Data.Dtos
         public string Comment { get; set; } = null!;
         public int Rating { get; set; }
         public DateTime ReviewDate { get; set; }
+    }
+    public class ServicePackageItemDto
+    {
+        public string Name { get; set; } = null!;
+        public int ServicePackageId { get; set; }
     }
 }

@@ -67,7 +67,11 @@ namespace Project.Service.Implementations
                 Id = p.Id,
                 Title = p.Title,
                 Price = p.Price,
-                Items = p.Items.ToList()
+                Items = p.Items.Select(pi => new ServicePackageItemDto
+                {
+                    Name = pi.Name,
+                    ServicePackageId = pi.ServicePackageId
+                }).ToList()
             }).ToList(),
 
 
