@@ -9,4 +9,4 @@ public class ServicePackage
 
     public int ServiceId { get; set; }
     public ServiceEntity Service { get; set; } = null!;
-}
+}   

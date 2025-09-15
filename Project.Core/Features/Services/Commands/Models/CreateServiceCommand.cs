@@ -15,10 +15,8 @@ namespace Project.Core.Features.Services.Commands.Models
         public int Capacity { get; set; }
         public decimal Price { get; set; }
         public string? Policies { get; set; }
-
         public int ServiceCategoryId { get; set; }
 
-        // 🔥 دي اللي هتتبعت من الفرونت
         public string UserId { get; set; } = null!;
 
         // صور إضافية

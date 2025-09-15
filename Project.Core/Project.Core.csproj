@@ -27,8 +27,6 @@
     <Folder Include="Features\Authentication\Queries\" />
     <Folder Include="Features\Claims\Commands\" />
     <Folder Include="Features\Services\Commands\Validators\" />
-    <Folder Include="Features\Services\Queries\Handlers\" />
-    <Folder Include="Features\Services\Queries\Models\" />
     <Folder Include="Features\Services\Queries\Validators\" />
     <Folder Include="Mapping\ApplicationUsers\Queries\" />
     <Folder Include="Mapping\Roles\Commands\" />
