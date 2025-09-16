@@ -6,6 +6,6 @@ public class ServiceFeature
     public string Name { get; set; } = null!;
     public string? Icon { get; set; }
 
-    public int ServiceId { get; set; }
+    public int? ServiceId { get; set; }
     public ServiceEntity Service { get; set; } = null!;
 }

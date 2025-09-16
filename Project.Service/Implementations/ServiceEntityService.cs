@@ -1,4 +1,5 @@
 ﻿using System.Linq.Expressions;
+using System.Threading;
 
 namespace Project.Service.Implementations
 {
@@ -30,13 +31,25 @@ namespace Project.Service.Implementations
             return await _unitOfWork.Services.GetTableNoTracking().Where(x => x.Id.Equals(id)).Select(ServiceToDto).FirstOrDefaultAsync();
 
         }
+        public async Task<ServiceEntity?> GetServiceEntityByIdForUpdateAsync(int id)
+        {
+            return await _unitOfWork.Services.GetTableNoTracking()
+                .Include(s => s.Features)
+                .Include(s => s.Packages)
+                    .ThenInclude(p => p.Items)
+                .Include(s => s.Images)
+                .Include(s => s.Reviews)
+                .FirstOrDefaultAsync(s => s.Id == id);
+        }
         public async Task<IEnumerable<ServiceDto>> GetServicesByCategoryAsync(string category)
         {
             return await _unitOfWork.Services.GetTableNoTracking().Where(x => x.Category.Name.Equals(category)).Select(ServiceToDto).ToListAsync();
         }
-        public Task<string> UpdateServiceAsync(ServiceEntity service)
+        public async Task<string> UpdateServiceAsync(ServiceEntity service)
         {
-            throw new NotImplementedException();
+           _unitOfWork.Services.Update(service);
+            await _unitOfWork.CompeleteAsync();
+            return "Updated";
         }
         #region  Expression to convert ServiceEntity to ServiceDto
         private static readonly Expression<Func<ServiceEntity, ServiceDto>> ServiceToDto = s => new ServiceDto

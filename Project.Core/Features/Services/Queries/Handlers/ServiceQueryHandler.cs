@@ -11,7 +11,10 @@ namespace Project.Core.Features.Services.Queries.Handlers
 {
     public class ServiceQueryHandler(IMapper mapper, IServiceEntityService serviceEntityService) : ResponseHandler,
         IRequestHandler<GetAllServicesQuery, Response<IEnumerable<ServiceDto>>>,
-        IRequestHandler<GetServiceByIdQuery, Response<ServiceDto>>
+        IRequestHandler<GetServiceByIdQuery, Response<ServiceDto>>,
+        IRequestHandler<GetServicesByCategoryNameQuery, Response<IEnumerable<ServiceDto>>>
+
+
     {
         private readonly IMapper _mapper = mapper;
         private readonly IServiceEntityService _serviceEntityService = serviceEntityService;
@@ -28,6 +31,13 @@ namespace Project.Core.Features.Services.Queries.Handlers
             if (service == null) return BadRequest<ServiceDto>("service Not found");
             return Success(service);
 
+        }
+
+        public async Task<Response<IEnumerable<ServiceDto>>> Handle(GetServicesByCategoryNameQuery request, CancellationToken cancellationToken)
+        {
+            var services = await _serviceEntityService.GetServicesByCategoryAsync(request.Name);
+            if (services == null) return BadRequest<IEnumerable<ServiceDto>>("service Not found");
+            return Success(services);
         }
     }
 }

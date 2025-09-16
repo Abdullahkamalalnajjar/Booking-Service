@@ -5,6 +5,7 @@
         public ServiceProfile()
         {
             CreateServiceMapping();
+            UpdatedServiceMapping();
 
         }
     }

@@ -14,12 +14,30 @@ namespace Project.Api.Controllers
             var response = await Mediator.Send(command);
             return NewResult(response);
         }
+        [HttpPut("UpdateService")]
+        public async Task<IActionResult> UpdateService([FromBody] UpdateServiceCommand command)
+        {
+            var response = await Mediator.Send(command);
+            return NewResult(response);
+        }
+        [HttpDelete("DeleteServiceById")]
+        public async Task<IActionResult> DeleteService([FromQuery] DeleteServiceCommand command)
+        {
+            var response = await Mediator.Send(command);
+            return NewResult(response);
+        }
 
 
         [HttpGet("GetAllServices")]
         public async Task<IActionResult> GetAllServices()
         {
             var response = await Mediator.Send(new GetAllServicesQuery());
+            return NewResult(response);
+        }
+        [HttpGet("GetServicesByCategoryName")]
+        public async Task<IActionResult> GetServicesByCategoryName([FromQuery] GetServicesByCategoryNameQuery query )
+        {
+            var response = await Mediator.Send(query);
             return NewResult(response);
         }
 

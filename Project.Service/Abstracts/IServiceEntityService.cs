@@ -8,6 +8,7 @@
         Task<ServiceDto?> GetServiceByIdAsync(int id);
         Task<IEnumerable<ServiceDto>> GetAllServicesAsync();
         Task<IEnumerable<ServiceDto>> GetServicesByCategoryAsync(string category);
+       Task<ServiceEntity?> GetServiceEntityByIdForUpdateAsync(int id);
     }
 
 }
