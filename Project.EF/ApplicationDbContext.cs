@@ -23,6 +23,7 @@
         public DbSet<ServicePackage> ServicePackages { get; set; }
         public DbSet<ServiceReview> ServiceReviews { get; set; }
         public DbSet<ServicePackageItem> ServicePackageItems { get; set; }
+        public DbSet<Reservation> Reservations { get; set; }
 
 
     }
