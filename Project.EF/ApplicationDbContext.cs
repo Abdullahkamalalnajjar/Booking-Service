@@ -1,4 +1,7 @@
-﻿namespace Project.EF
+﻿using Project.Data.Entities.chat;
+using Project.Data.Entities.verifyRequst;
+
+namespace Project.EF
 {
     public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IHttpContextAccessor httpContextAccessor)
         : IdentityDbContext<ApplicationUser, ApplicationRole, string>(options)
@@ -24,6 +27,9 @@
         public DbSet<ServiceReview> ServiceReviews { get; set; }
         public DbSet<ServicePackageItem> ServicePackageItems { get; set; }
         public DbSet<Reservation> Reservations { get; set; }
+        public DbSet<Conversation> Conversations { get; set; }
+        public DbSet<Message> Messages { get; set; }
+        public DbSet<VerificationRequest> VerificationRequests { get; set; }
 
 
     }

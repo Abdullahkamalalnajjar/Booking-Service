@@ -15,6 +15,7 @@ namespace Project.Service
             services.AddTransient<IRoleService, RoleService>();
             services.AddTransient<IClaimService, ClaimService>();
            services.AddTransient<IServiceEntityService, ServiceEntityService>();
+           services.AddTransient<IVerificationRequestService, VerificationRequestService>();
 
 
             return services;

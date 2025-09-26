@@ -1,3 +1,5 @@
+﻿using Project.Data.Entities.verifyRequst;
+
 namespace Project.EF.Configurations;
 
 public class ServiceConfig : IEntityTypeConfiguration<ServiceEntity>
@@ -13,5 +15,9 @@ public class ServiceConfig : IEntityTypeConfiguration<ServiceEntity>
             .WithMany()
             .HasForeignKey(s => s.ServiceCategoryId)
             .OnDelete(DeleteBehavior.Restrict);
+        builder.HasOne(s => s.VerificationRequest);
+       
+
+
     }
 }

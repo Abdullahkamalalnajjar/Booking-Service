@@ -8,6 +8,7 @@
         IServiceFeatureRepository ServiceFeatures { get; }
         IServicePackageRepository ServicePackages { get; }
         IServiceReviewRepository ServiceReviews { get; }
+        IVerificationRequestRepository verificationRequestRepository { get; }
 
         Task<int> CompeleteAsync();
         Task<IDbContextTransaction> BeginTransactionAsync();
