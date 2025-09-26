@@ -26,7 +26,14 @@ namespace Project.Api.Controllers
         {
             var response = await Mediator.Send(command);
             return NewResult(response);
+        }   
+        [HttpDelete("DeleteVerificationRequest")]
+        public async Task<IActionResult> DeleteVerificationRequest([FromQuery] DeleteVerificationRequestCommand command)
+        {
+            var response = await Mediator.Send(command);
+            return NewResult(response);
         }
+
         [HttpGet ("GetVerificationRequest")]
 
         public  async Task <IActionResult> GetVerificationRequest()

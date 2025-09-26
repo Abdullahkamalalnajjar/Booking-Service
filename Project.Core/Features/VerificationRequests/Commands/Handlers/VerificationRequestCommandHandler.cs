@@ -12,6 +12,7 @@ namespace Project.Core.Features.VerificationRequests.Commands.Handlers
     public class VerificationRequestCommandHandler(IVerificationRequestService verificationRequestService, IMapper mapper, IHttpContextAccessor httpContextAccessor) : ResponseHandler,
         IRequestHandler<CreateVerificationRequestCommand, Response<string>>,
         IRequestHandler<UpdateVerificationRequestCommand, Response<string>>,
+        IRequestHandler<DeleteVerificationRequestCommand, Response<string>>,
         IRequestHandler<UpdateVerificationRequestStatusCommand, Response<string>>
     {
         private readonly IVerificationRequestService _verificationRequestService = verificationRequestService;
@@ -37,21 +38,24 @@ namespace Project.Core.Features.VerificationRequests.Commands.Handlers
                 : BadRequest<string>("Failed to create verification request.");
         }
         #endregion
-
-        #region UpdateVerificationRequest
+ 
+        #region UpdateVerificationRequestStatus
         public async Task<Response<string>> Handle(UpdateVerificationRequestStatusCommand request, CancellationToken cancellationToken)
         {
             await _verificationRequestService.UpdateStatusAsync(request.Id ,request.Status, cancellationToken);
             return Success("Verification request status updated successfully.");
         }
-      
+        #endregion
+
+        #region UpdateVerificationRequest
+
         public async Task<Response<string>> Handle(UpdateVerificationRequestCommand request, CancellationToken cancellationToken)
         {
             var oldVerificationRequest = await _verificationRequestService.GetByIdAsync(request.Id);
             if (oldVerificationRequest == null) return NotFound<string> ("Verification Request Not Found");
             try
             {
-                // ✅ تحديث النصوص لو اتبعتت
+               
                 if (!string.IsNullOrEmpty(request.FullName))
                     oldVerificationRequest.FullName = request.FullName;
 
@@ -67,7 +71,7 @@ namespace Project.Core.Features.VerificationRequests.Commands.Handlers
                 if (!string.IsNullOrEmpty(request.LicenseNumber))
                     oldVerificationRequest.LicenseNumber = request.LicenseNumber;
 
-                // ✅ تحديث التواريخ لو اتبعتت
+              
                 if (request.BirthDate.HasValue)
                     oldVerificationRequest.BirthDate = request.BirthDate.Value;
 
@@ -83,7 +87,7 @@ namespace Project.Core.Features.VerificationRequests.Commands.Handlers
                 if (request.LicenseIssueDate.HasValue)
                     oldVerificationRequest.LicenseIssueDate = request.LicenseIssueDate.Value;
 
-                // ✅ تحديث الملفات لو اتبعتت
+             
                 if (request.NationalIdFrontImage != null)
                     oldVerificationRequest.NationalIdFrontImage = FileHelper.SaveFile(request.NationalIdFrontImage, "Verification", _httpContextAccessor);
 
@@ -118,6 +122,24 @@ namespace Project.Core.Features.VerificationRequests.Commands.Handlers
             }
  
         }
+
+
         #endregion
+
+        #region DeleteVerificationRequest
+        public async Task<Response<string>> Handle(DeleteVerificationRequestCommand request, CancellationToken cancellationToken)
+        {
+            var verificationRequest= await _verificationRequestService.GetByIdAsync(request.Id);
+            if (verificationRequest == null)
+            return BadRequest<string>("Verification request Not Found");
+            var result = await _verificationRequestService.DeleteAsync(verificationRequest);
+            if (result ==true)
+            return Success("Deleted Successfly");
+            return BadRequest<string>("Failed to Delete Verification request ");
+        }
+
+
+        #endregion
+
     }
 }
