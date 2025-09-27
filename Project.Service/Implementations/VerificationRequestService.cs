@@ -63,7 +63,6 @@ namespace Project.Service.Implementations
             if (request == null)
                 return "Not found";
 
-            // نحاول نعمل Parse من الـ string للـ Enum
             if (Enum.TryParse<VerificationStatus>(status, out var parsedStatus))
             {
                 request.Status = parsedStatus;

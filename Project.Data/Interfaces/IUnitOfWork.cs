@@ -9,7 +9,7 @@
         IServicePackageRepository ServicePackages { get; }
         IServiceReviewRepository ServiceReviews { get; }
         IVerificationRequestRepository verificationRequestRepository { get; }
-
+        IReservationRepository reservationRepository { get; }
         Task<int> CompeleteAsync();
         Task<IDbContextTransaction> BeginTransactionAsync();
     }

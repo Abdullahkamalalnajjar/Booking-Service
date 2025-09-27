@@ -9,6 +9,8 @@ namespace Project.EF
             services.AddTransient<IUnitOfWork, UnitOfWork>();
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IVerificationRequestRepository,VerificationRequestRepository>();
+            services.AddTransient<IReservationRepository, ReservationRepository>();
+
 
 
             return services;
