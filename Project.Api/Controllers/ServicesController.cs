@@ -34,7 +34,7 @@ namespace Project.Api.Controllers
             var response = await Mediator.Send(new GetAllServicesQuery());
             return NewResult(response);
         }
-        [HttpGet("GetServicesByCategoryName")]
+        [HttpGet("Search")]
         public async Task<IActionResult> GetServicesByCategoryName([FromQuery] GetServicesByCategoryNameQuery query )
         {
             var response = await Mediator.Send(query);

@@ -436,6 +436,47 @@ namespace Project.EF.Migrations
                     b.ToTable("RefreshTokens");
                 });
 
+            modelBuilder.Entity("Project.Data.Entities.Reservation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ClientId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("DiscountCoupon")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("NumberOfGuests")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PaymentMethod")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ReservationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ReservationPeriod")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ServiceEntityId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClientId");
+
+                    b.HasIndex("ServiceEntityId");
+
+                    b.ToTable("Reservations");
+                });
+
             modelBuilder.Entity("Project.Data.Entities.ServiceCategory", b =>
                 {
                     b.Property<int>("Id")
@@ -500,6 +541,9 @@ namespace Project.EF.Migrations
                     b.Property<int>("Capacity")
                         .HasColumnType("int");
 
+                    b.Property<string>("Deposit")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -507,8 +551,14 @@ namespace Project.EF.Migrations
                     b.Property<string>("ImageUrl")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Latitude")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Location")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Longitude")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
@@ -553,7 +603,7 @@ namespace Project.EF.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ServiceId")
+                    b.Property<int?>("ServiceId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -596,7 +646,10 @@ namespace Project.EF.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("ServiceId")
+                    b.Property<int?>("ReservationId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ServiceId")
                         .HasColumnType("int");
 
                     b.Property<string>("Title")
@@ -604,6 +657,8 @@ namespace Project.EF.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ReservationId");
 
                     b.HasIndex("ServiceId");
 
@@ -662,6 +717,146 @@ namespace Project.EF.Migrations
                     b.HasIndex("ServiceId");
 
                     b.ToTable("ServiceReviews");
+                });
+
+            modelBuilder.Entity("Project.Data.Entities.chat.Conversation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ClientId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ServiceOwnerId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Conversations");
+                });
+
+            modelBuilder.Entity("Project.Data.Entities.chat.Message", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ConversationId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsRead")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ReadAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("SenderId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("SentAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ConversationId");
+
+                    b.ToTable("Messages");
+                });
+
+            modelBuilder.Entity("Project.Data.Entities.verifyRequst.VerificationRequest", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AddressProofFile")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("BirthDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CommercialRecordImage")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("CommercialRecordIssueDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CommercialRecordNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("FullName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LicenseImage")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("LicenseIssueDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LicenseNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NationalIdBackImage")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NationalIdFrontImage")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("NationalIdIssueDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("NationalIdNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PassportImage")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("PassportIssueDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("PassportNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ServiceId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("VerifiedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ServiceId")
+                        .IsUnique();
+
+                    b.ToTable("VerificationRequests");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -735,6 +930,25 @@ namespace Project.EF.Migrations
                     b.Navigation("ApplicationUser");
                 });
 
+            modelBuilder.Entity("Project.Data.Entities.Reservation", b =>
+                {
+                    b.HasOne("Project.Data.Entities.ApplicationUser", "Client")
+                        .WithMany()
+                        .HasForeignKey("ClientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Project.Data.Entities.ServiceEntity", "ServiceEntity")
+                        .WithMany("Reservations")
+                        .HasForeignKey("ServiceEntityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Client");
+
+                    b.Navigation("ServiceEntity");
+                });
+
             modelBuilder.Entity("Project.Data.Entities.ServiceEntity", b =>
                 {
                     b.HasOne("Project.Data.Entities.ServiceCategory", "Category")
@@ -759,8 +973,7 @@ namespace Project.EF.Migrations
                     b.HasOne("Project.Data.Entities.ServiceEntity", "Service")
                         .WithMany("Features")
                         .HasForeignKey("ServiceId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Service");
                 });
@@ -778,11 +991,14 @@ namespace Project.EF.Migrations
 
             modelBuilder.Entity("Project.Data.Entities.ServicePackage", b =>
                 {
+                    b.HasOne("Project.Data.Entities.Reservation", null)
+                        .WithMany("Packages")
+                        .HasForeignKey("ReservationId");
+
                     b.HasOne("Project.Data.Entities.ServiceEntity", "Service")
                         .WithMany("Packages")
                         .HasForeignKey("ServiceId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Service");
                 });
@@ -809,9 +1025,36 @@ namespace Project.EF.Migrations
                     b.Navigation("Service");
                 });
 
+            modelBuilder.Entity("Project.Data.Entities.chat.Message", b =>
+                {
+                    b.HasOne("Project.Data.Entities.chat.Conversation", "Conversation")
+                        .WithMany("Messages")
+                        .HasForeignKey("ConversationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Conversation");
+                });
+
+            modelBuilder.Entity("Project.Data.Entities.verifyRequst.VerificationRequest", b =>
+                {
+                    b.HasOne("Project.Data.Entities.ServiceEntity", "Service")
+                        .WithOne("VerificationRequest")
+                        .HasForeignKey("Project.Data.Entities.verifyRequst.VerificationRequest", "ServiceId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Service");
+                });
+
             modelBuilder.Entity("Project.Data.Entities.ApplicationUser", b =>
                 {
                     b.Navigation("RefreshTokens");
+                });
+
+            modelBuilder.Entity("Project.Data.Entities.Reservation", b =>
+                {
+                    b.Navigation("Packages");
                 });
 
             modelBuilder.Entity("Project.Data.Entities.ServiceEntity", b =>
@@ -822,12 +1065,21 @@ namespace Project.EF.Migrations
 
                     b.Navigation("Packages");
 
+                    b.Navigation("Reservations");
+
                     b.Navigation("Reviews");
+
+                    b.Navigation("VerificationRequest");
                 });
 
             modelBuilder.Entity("Project.Data.Entities.ServicePackage", b =>
                 {
                     b.Navigation("Items");
+                });
+
+            modelBuilder.Entity("Project.Data.Entities.chat.Conversation", b =>
+                {
+                    b.Navigation("Messages");
                 });
 #pragma warning restore 612, 618
         }

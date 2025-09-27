@@ -10,5 +10,7 @@ public class ServiceFeatureConfig : IEntityTypeConfiguration<ServiceFeature>
             .WithMany(s => s.Features)
             .HasForeignKey(sf => sf.ServiceId)
             .OnDelete(DeleteBehavior.Cascade);
+
+
     }
 }

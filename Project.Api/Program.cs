@@ -1,13 +1,14 @@
+﻿using Microsoft.EntityFrameworkCore;
+using Project.Api.Configurations.Swagger;
 using Project.Api.Configurations.Swagger;
 using Project.Core;
 using Project.Core.Middleware;
-using Project.EF;
-using Project.Service;
-using Microsoft.EntityFrameworkCore;
-using Project.Api.Configurations.Swagger;
 using Project.Core.Middleware;
 using Project.EF;
+using Project.EF;
 using Project.Service;
+using Project.Service;
+using Project.Service.Implementations;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -38,13 +39,17 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: cors,
                       policy =>
                       {
-                          policy.AllowAnyOrigin()
+                          policy.WithOrigins("http://127.0.0.1:5500", "http://localhost:5500") // مكان ما فاتح chat.html
                                 .AllowAnyHeader()
-                                .AllowAnyMethod();
+                                .AllowAnyMethod()
+                                .AllowCredentials();
                       });
 });
 #endregion
-
+// SignalR + controllers + presence
+builder.Services.AddSignalR();
+builder.Services.AddControllers();
+builder.Services.AddSingleton<PresenceTracker>();
 var app = builder.Build();
 #region Update Database on Startup
 using (var scope = app.Services.CreateScope())
@@ -69,16 +74,16 @@ using (var scope = app.Services.CreateScope())
 //{
 app.UseSwagger();
 app.UseSwaggerUI();
-//}
-
-
-app.UseCors(cors);
-
-app.UseStaticFiles();
 app.UseHttpsRedirection();
-app.UseMiddleware<ErrorHandlerMiddleware>();
+
+//}
+app.UseRouting();
+app.UseCors(cors);
+app.UseStaticFiles();
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseMiddleware<ErrorHandlerMiddleware>();
 app.MapControllers();
+app.MapHub<ChatHub>("/chathub");
 app.Run();
 
