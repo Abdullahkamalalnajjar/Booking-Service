@@ -1,5 +1,4 @@
 ﻿using System.Linq.Expressions;
-using System.Threading;
 
 namespace Project.Service.Implementations
 {
@@ -47,7 +46,7 @@ namespace Project.Service.Implementations
         }
         public async Task<string> UpdateServiceAsync(ServiceEntity service)
         {
-           _unitOfWork.Services.Update(service);
+            _unitOfWork.Services.Update(service);
             await _unitOfWork.CompeleteAsync();
             return "Updated";
         }
@@ -82,6 +81,7 @@ namespace Project.Service.Implementations
                 Price = p.Price,
                 Items = p.Items.Select(pi => new ServicePackageItemDto
                 {
+                    Id = pi.Id,
                     Name = pi.Name,
                     ServicePackageId = pi.ServicePackageId
                 }).ToList()

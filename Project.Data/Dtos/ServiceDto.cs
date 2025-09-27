@@ -21,20 +21,20 @@
     public class ServiceImageDto
     {
         public int Id { get; set; }
-        public string Url { get; set; } 
+        public string Url { get; set; }
     }
     public class ServiceFeatureDto
     {
         public int Id { get; set; }
-        public string Name { get; set; } 
+        public string Name { get; set; }
         public string? Icon { get; set; }
     }
     public class ServicePackageDto
     {
         public int Id { get; set; }
-        public string Title { get; set; } 
+        public string Title { get; set; }
         public decimal Price { get; set; }
-        public List<ServicePackageItemDto> Items { get; set; } 
+        public List<ServicePackageItemDto> Items { get; set; }
     }
     public class ServiceReviewDto
     {
@@ -46,6 +46,7 @@
     }
     public class ServicePackageItemDto
     {
+        public int Id { get; set; }
         public string Name { get; set; } = null!;
         public int ServicePackageId { get; set; }
     }
