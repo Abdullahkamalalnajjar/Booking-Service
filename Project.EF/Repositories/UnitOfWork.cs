@@ -10,8 +10,9 @@
         public IServicePackageRepository ServicePackages { get; private set; }
         public IServiceReviewRepository ServiceReviews { get; private set; }
         public IVerificationRequestRepository verificationRequestRepository { get; private set; }
-
         public IReservationRepository reservationRepository { get; private set; }
+        public IReservationPackageRespository ReservationPackages { get; private set; }
+
 
         public UnitOfWork(ApplicationDbContext context)
         {
@@ -23,7 +24,8 @@
             ServicePackages = new ServicePackageRepository(_context);
             ServiceReviews = new ServiceReviewRepository(_context);
             verificationRequestRepository = new VerificationRequestRepository(_context);
-            reservationRepository = new ReservationRepository(_context);    
+            reservationRepository = new ReservationRepository(_context);
+            ReservationPackages = new ReservationPackageRespository(_context);
         }
 
         public async Task<int> CompeleteAsync()

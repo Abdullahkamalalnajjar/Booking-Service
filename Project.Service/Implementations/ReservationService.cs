@@ -59,6 +59,11 @@ namespace Project.Service.Implementations
 
         }
 
+        public async Task<Reservation> GetById(int reservationId)
+        {
+            return await _unitOfWork.reservationRepository.GetByIdAsync(reservationId);
+        }
+
         private static readonly Expression<Func<Reservation, ReservationDto>> ReservationDto = s => new ReservationDto
         {
             Id = s.Id,

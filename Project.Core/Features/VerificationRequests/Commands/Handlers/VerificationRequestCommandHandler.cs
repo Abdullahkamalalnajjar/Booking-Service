@@ -1,11 +1,5 @@
-﻿using Org.BouncyCastle.Asn1.Pkcs;
-using Project.Core.Features.VerificationRequests.Commands.Models;
+﻿using Project.Core.Features.VerificationRequests.Commands.Models;
 using Project.Data.Entities.verifyRequst;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Project.Core.Features.VerificationRequests.Commands.Handlers
 {
@@ -33,16 +27,16 @@ namespace Project.Core.Features.VerificationRequests.Commands.Handlers
             verificationRequest.AddressProofFile = FileHelper.SaveFile(request.AddressProofFile, "Verification", _httpContextAccessor);
             #endregion
             var result = await _verificationRequestService.CreateAsync(verificationRequest, cancellationToken);
-                 return result == "created"
-                ? Success("Verification request created successfully.")
-                : BadRequest<string>("Failed to create verification request.");
+            return result == "created"
+           ? Success("Verification request created successfully.")
+           : BadRequest<string>("Failed to create verification request.");
         }
         #endregion
- 
+
         #region UpdateVerificationRequestStatus
         public async Task<Response<string>> Handle(UpdateVerificationRequestStatusCommand request, CancellationToken cancellationToken)
         {
-            await _verificationRequestService.UpdateStatusAsync(request.Id ,request.Status, cancellationToken);
+            await _verificationRequestService.UpdateStatusAsync(request.Id, request.Status, cancellationToken);
             return Success("Verification request status updated successfully.");
         }
         #endregion
@@ -52,10 +46,10 @@ namespace Project.Core.Features.VerificationRequests.Commands.Handlers
         public async Task<Response<string>> Handle(UpdateVerificationRequestCommand request, CancellationToken cancellationToken)
         {
             var oldVerificationRequest = await _verificationRequestService.GetByIdAsync(request.Id);
-            if (oldVerificationRequest == null) return NotFound<string> ("Verification Request Not Found");
+            if (oldVerificationRequest == null) return NotFound<string>("Verification Request Not Found");
             try
             {
-               
+
                 if (!string.IsNullOrEmpty(request.FullName))
                     oldVerificationRequest.FullName = request.FullName;
 
@@ -71,7 +65,7 @@ namespace Project.Core.Features.VerificationRequests.Commands.Handlers
                 if (!string.IsNullOrEmpty(request.LicenseNumber))
                     oldVerificationRequest.LicenseNumber = request.LicenseNumber;
 
-              
+
                 if (request.BirthDate.HasValue)
                     oldVerificationRequest.BirthDate = request.BirthDate.Value;
 
@@ -87,7 +81,7 @@ namespace Project.Core.Features.VerificationRequests.Commands.Handlers
                 if (request.LicenseIssueDate.HasValue)
                     oldVerificationRequest.LicenseIssueDate = request.LicenseIssueDate.Value;
 
-             
+
                 if (request.NationalIdFrontImage != null)
                     oldVerificationRequest.NationalIdFrontImage = FileHelper.SaveFile(request.NationalIdFrontImage, "Verification", _httpContextAccessor);
 
@@ -111,16 +105,17 @@ namespace Project.Core.Features.VerificationRequests.Commands.Handlers
 
                 var result = await _verificationRequestService.UpdateAsync(oldVerificationRequest, cancellationToken);
 
-                  return result == "Updated"
-                    ? Success("Verification request updated successfully.")
-                    : BadRequest<string>("Failed to update verification request.");
+                return result == "Updated"
+                  ? Success("Verification request updated successfully.")
+                  : BadRequest<string>("Failed to update verification request.");
 
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
 
                 return BadRequest<string>($"Error while updating: {ex.Message}");
             }
- 
+
         }
 
 
@@ -129,12 +124,12 @@ namespace Project.Core.Features.VerificationRequests.Commands.Handlers
         #region DeleteVerificationRequest
         public async Task<Response<string>> Handle(DeleteVerificationRequestCommand request, CancellationToken cancellationToken)
         {
-            var verificationRequest= await _verificationRequestService.GetByIdAsync(request.Id);
+            var verificationRequest = await _verificationRequestService.GetByIdAsync(request.Id);
             if (verificationRequest == null)
-            return BadRequest<string>("Verification request Not Found");
+                return BadRequest<string>("Verification request Not Found");
             var result = await _verificationRequestService.DeleteAsync(verificationRequest);
-            if (result ==true)
-            return Success("Deleted Successfly");
+            if (result == true)
+                return Success("Deleted Successfly");
             return BadRequest<string>("Failed to Delete Verification request ");
         }
 

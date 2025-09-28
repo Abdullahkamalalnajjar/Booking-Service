@@ -9,5 +9,7 @@
         Task<IEnumerable<ReservationDto>> GetClientReservationsAsync(string clientId);
         Task<IEnumerable<ReservationDto>> GetAllReservationsAsync();
         Task<ReservationDto> GetReservationByIdAsync(int reservationId);
+        Task<Reservation> GetById(int reservationId);
+
     }
 }

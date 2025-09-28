@@ -10,6 +10,7 @@
         IServiceReviewRepository ServiceReviews { get; }
         IVerificationRequestRepository verificationRequestRepository { get; }
         IReservationRepository reservationRepository { get; }
+        IReservationPackageRespository ReservationPackages { get; }
         Task<int> CompeleteAsync();
         Task<IDbContextTransaction> BeginTransactionAsync();
     }
