@@ -42,14 +42,15 @@ namespace Project.Service.Implementations
             return await _unitOfWork.reservationRepository.GetTableNoTracking().Select(ReservationDto).ToListAsync();
         }
 
-        public async Task<ReservationDto> GetReservationByIdAsync(int reservationId)
+        public async Task<ReservationDto?> GetReservationByIdAsync(int reservationId)
         {
-            var Reservation = await _unitOfWork.reservationRepository.GetTableAsTracking()
-            .Where(x => x.Id == reservationId).Select(ReservationDto).FirstOrDefaultAsync();
-            return Reservation;
+            var reservation = await _unitOfWork.reservationRepository.GetTableAsTracking()
+            .Where(x => x.Id == reservationId)
+            .Select(ReservationDto).FirstOrDefaultAsync();
+            return reservation;
         }
 
-        public async Task<IEnumerable<ReservationDto>> GetUserReservationsAsync(string clientId)
+        public async Task<IEnumerable<ReservationDto>> GetClientReservationsAsync(string clientId)
         {
             var reservationt = await _unitOfWork.reservationRepository.GetTableNoTracking()
                 .Where(x => x.ClientId == clientId).Select(ReservationDto).ToListAsync();
@@ -108,5 +109,5 @@ namespace Project.Service.Implementations
             }
         };
 
-}
+    }
 }
