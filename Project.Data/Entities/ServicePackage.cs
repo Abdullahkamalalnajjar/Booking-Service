@@ -10,4 +10,6 @@ public class ServicePackage
     public ServiceEntity Service { get; set; } = null!;
 
     public ICollection<ServicePackageItem> Items { get; set; } = new List<ServicePackageItem>();
+    public ICollection<ReservationPackage> ReservationPackages { get; set; } = new List<ReservationPackage>();
+
 }

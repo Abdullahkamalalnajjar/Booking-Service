@@ -1,9 +1,4 @@
 ﻿using Project.Data.Enum;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Project.Core.Features.Reservations.Command.Models
 {
@@ -16,8 +11,8 @@ namespace Project.Core.Features.Reservations.Command.Models
         public string? DiscountCoupon { get; set; }
         public int ServiceEntityId { get; set; }
         public string ClientId { get; set; } = null!;
-        public List<int> Packages { get; set; } = new List<int>();
+        public List<int> Packages { get; set; }
 
     }
-    }
+}
 

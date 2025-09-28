@@ -12,8 +12,8 @@ using Project.EF;
 namespace Project.EF.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250926235241_ReservationService")]
-    partial class ReservationService
+    [Migration("20250927234403_addconfiguuuration")]
+    partial class addconfiguuuration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -938,7 +938,7 @@ namespace Project.EF.Migrations
                     b.HasOne("Project.Data.Entities.ApplicationUser", "Client")
                         .WithMany()
                         .HasForeignKey("ClientId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Project.Data.Entities.ServiceEntity", "ServiceEntity")

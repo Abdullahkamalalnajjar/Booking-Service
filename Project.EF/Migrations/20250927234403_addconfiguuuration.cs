@@ -5,7 +5,7 @@
 namespace Project.EF.Migrations
 {
     /// <inheritdoc />
-    public partial class ReservationService : Migration
+    public partial class addconfiguuuration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -28,7 +28,7 @@ namespace Project.EF.Migrations
                 column: "ClientId",
                 principalTable: "AspNetUsers",
                 principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
+                onDelete: ReferentialAction.Restrict);
         }
 
         /// <inheritdoc />
