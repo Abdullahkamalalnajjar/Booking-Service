@@ -1,11 +1,4 @@
-﻿using Project.Data.Enum;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Project.Data.Dtos
+﻿namespace Project.Data.Dtos
 {
     public class ReservationDto
     {
@@ -15,7 +8,17 @@ namespace Project.Data.Dtos
         public int NumberOfGuests { get; set; }
         public string PaymentMethod { get; set; }
         public string? DiscountCoupon { get; set; }
-        public int ServiceEntityId { get; set; }
+        public int ServiceId { get; set; }
+        public ServiceDto Service { get; set; }
         public string ClientId { get; set; }
+        public string ClientName { get; set; }
+
+    }
+    public class ReservationPackageDto
+    {
+        public int ServicePackageId { get; set; }
+        public string Title { get; set; }
+        public decimal Price { get; set; }
+        public ServicePackageDto ServicePackage { get; set; } = null!;
     }
 }
