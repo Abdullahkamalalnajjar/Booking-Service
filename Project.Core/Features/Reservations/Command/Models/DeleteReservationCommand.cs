@@ -9,7 +9,13 @@ namespace Project.Core.Features.Reservations.Command.Models
 {
     public class DeleteReservationCommand : IRequest<Response<string>>
     {
-        public int Id { get; set; } 
+        public int Id { get; set; }
+        // constructor ياخد id
+        public DeleteReservationCommand(int id)
+        {
+            Id = id;
+        }
+
     }
-   
+
 }

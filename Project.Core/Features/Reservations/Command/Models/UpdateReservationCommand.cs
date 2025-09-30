@@ -10,8 +10,6 @@ namespace Project.Core.Features.Reservations.Command.Models
         public int NumberOfGuests { get; set; }
         public PaymentMethod PaymentMethod { get; set; }
         public string? DiscountCoupon { get; set; }
-        public int ServiceEntityId { get; set; }
-        public string ClientId { get; set; } = null!;
         public List<int> Packages { get; set; } = new List<int>();
 
     }

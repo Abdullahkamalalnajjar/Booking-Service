@@ -35,6 +35,7 @@ namespace Project.Core.Features.Reservations.Command.Handler
         }
         #endregion
 
+
         #region UpdateReservation
         public async Task<Response<string>> Handle(UpdateReservationCommand request, CancellationToken cancellationToken)
         {
@@ -44,7 +45,7 @@ namespace Project.Core.Features.Reservations.Command.Handler
 
             try
             {
-                // ✅ تحديث البيانات الأساسية
+                // ✅ تحديث الحقول بس لو مبعوتة
                 if (request.ReservationDate != default)
                     oldReservation.ReservationDate = request.ReservationDate;
 
@@ -60,45 +61,43 @@ namespace Project.Core.Features.Reservations.Command.Handler
                 if (!string.IsNullOrEmpty(request.DiscountCoupon))
                     oldReservation.DiscountCoupon = request.DiscountCoupon;
 
-                if (request.ServiceEntityId > 0)
-                    oldReservation.ServiceEntityId = request.ServiceEntityId;
-
-                if (!string.IsNullOrEmpty(request.ClientId))
-                    oldReservation.ClientId = request.ClientId;
-
-                // ✅ التحقق من الباكجات المسموح بها
-                var allowServicePackageIds = await _unitOfWork.ServicePackages
-                    .GetTableNoTracking()
-                    .Select(x => x.Id)
-                    .ToListAsync();
-
-                var notFoundPackages = request.Packages.Except(allowServicePackageIds).ToList();
-                if (notFoundPackages.Any())
+                // ✅ لو الباكجات مبعوتة، ساعتها فقط نعدل
+               if (request.Packages != null && request.Packages.Any())
                 {
-                    return NotFound<string>($"Invalid package IDs: {string.Join(", ", notFoundPackages)}");
+                    var allowServicePackageIds = await _unitOfWork.ServicePackages
+                        .GetTableNoTracking()
+                        .Select(x => x.Id)
+                        .ToListAsync(cancellationToken);
+
+                    var notFoundPackages = request.Packages.Except(allowServicePackageIds).ToList();
+                    if (notFoundPackages.Any())
+                        return NotFound<string>($"Invalid package IDs: {string.Join(", ", notFoundPackages)}");
+
+                    // مسح الباكجات القديمة
+                    var oldPackages = _unitOfWork.ReservationPackages
+                        .GetTableAsTracking()
+                        .Where(x => x.ReservationId == oldReservation.Id)
+                        .ToList();
+
+                    _unitOfWork.ReservationPackages.DeleteRange(oldPackages);
+
+                    // إضافة الباكجات الجديدة
+                    var newPackages = request.Packages.Select(p => new ReservationPackage
+                    {
+                        ReservationId = oldReservation.Id,
+                        ServicePackageId = p
+                    }).ToList();
+
+                    await _unitOfWork.ReservationPackages.AddRangeAsync(newPackages);
+                   
                 }
-
-                // ✅ تحديث جدول ReservationPackages (clear + add)
-                var oldPackages = _unitOfWork.ReservationPackages
-                    .GetTableNoTracking()
-                    .Where(x => x.ReservationId == oldReservation.Id);
-
-                _unitOfWork.ReservationPackages.DeleteRange(oldPackages);
-
-                var newPackages = request.Packages.Select(p => new ReservationPackage
-                {
-                    ReservationId = oldReservation.Id,
-                    ServicePackageId = p
-                }).ToList();
-
-                await _unitOfWork.ReservationPackages.AddRangeAsync(newPackages);
 
                 // ✅ تحديث وقت آخر تعديل
                 oldReservation.UpdatedAt = DateTime.UtcNow;
-
-                var result = await _reservationService.UpdateAsync(oldReservation, cancellationToken);
-
-                return result == "Updated"
+                await _unitOfWork.CompeleteAsync();
+                var result = await _reservationService.UpdateReservationAsync(oldReservation);
+               
+                return result == true
                     ? Success("Reservation updated successfully.")
                     : BadRequest<string>("Failed to update reservation.");
             }
@@ -108,6 +107,7 @@ namespace Project.Core.Features.Reservations.Command.Handler
             }
         }
         #endregion
+
 
 
 

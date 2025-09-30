@@ -14,23 +14,40 @@ namespace Project.Api.Controllers
             var response = await Mediator.Send(command);
             return NewResult(response);
         }
+        [HttpPut(Router.ReservationRouting.Edit)]
+        public async Task<IActionResult> UpdateReservation([FromForm] UpdateReservationCommand command)
+        {
+            var response = await Mediator.Send(command);
+            return NewResult(response);
+        }
+
+        [HttpDelete(Router.ReservationRouting.Delete)]
+        public async Task<IActionResult> DeleteReservation(int id)
+        {
+            var response = await Mediator.Send(new DeleteReservationCommand(id));
+            return NewResult(response);
+        }
+
         [HttpGet(Router.ReservationRouting.GetById)]
         public async Task<IActionResult> GetReservationById([FromRoute] int id)
         {
             var response = await Mediator.Send(new GetReservationByIdQuery(id));
             return NewResult(response);
         }
+
         [HttpGet(Router.ReservationRouting.List)]
         public async Task<IActionResult> GetAllReservations()
         {
             var response = await Mediator.Send(new GetAllReservations());
             return NewResult(response);
         }
+
         [HttpGet(Router.ReservationRouting.GetReservationsForClient)]
         public async Task<IActionResult> GetReservationsForClient([FromRoute] string clientId)
         {
             var response = await Mediator.Send(new GetClientReservationsQuery(clientId));
             return NewResult(response);
         }
+
     }
 }

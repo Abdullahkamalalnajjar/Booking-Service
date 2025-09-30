@@ -10,6 +10,8 @@ namespace Project.Data.Entities
         public int NumberOfGuests { get; set; }
         public PaymentMethod PaymentMethod { get; set; }
         public string? DiscountCoupon { get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime? UpdatedAt { get; set; }
         public int ServiceEntityId { get; set; }
         public ServiceEntity ServiceEntity { get; set; }
         public string ClientId { get; set; } = null!;
