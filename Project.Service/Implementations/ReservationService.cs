@@ -87,6 +87,9 @@ namespace Project.Service.Implementations
                 Price = s.ServiceEntity.Price,
                 ServiceCategoryId = s.ServiceEntity.ServiceCategoryId,
                 CategoryName = s.ServiceEntity.Category.Name,
+                Deposit = s.ServiceEntity.Deposit,
+                Longitude = s.ServiceEntity.Longitude,
+                Latitude = s.ServiceEntity.Latitude,
                 Features = s.ServiceEntity.Features.Select(sf => new ServiceFeatureDto
                 {
                     Id = sf.Id,
@@ -98,12 +101,12 @@ namespace Project.Service.Implementations
                     Id = si.Id,
                     Url = si.ImageUrl
                 }).ToList(),
-                Packages = s.ServiceEntity.Packages.Select(sp => new ServicePackageDto
+                Packages = s.ReservationPackages.Select(sp => new ServicePackageDto
                 {
-                    Id = sp.Id,
-                    Title = sp.Title,
-                    Price = sp.Price,
-                    Items = sp.Items.Select(pi => new ServicePackageItemDto
+                    Id = sp.ServicePackageId,
+                    Title = sp.ServicePackage.Title,
+                    Price = sp.ServicePackage.Price,
+                    Items = sp.ServicePackage.Items.Select(pi => new ServicePackageItemDto
                     {
                         Id = pi.Id,
                         Name = pi.Name,

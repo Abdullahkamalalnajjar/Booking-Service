@@ -11,7 +11,9 @@ namespace Project.Core.Features.Services.Commands.Models
         public decimal? Price { get; set; }
         public string? Policies { get; set; }
         public int? ServiceCategoryId { get; set; }
-
+        public string? Deposit { get; set; } = null!;
+        public string? Latitude { get; set; }
+        public string? Longitude { get; set; }
         public ICollection<UpdateServiceFeatureDto>? Features { get; set; }
         public ICollection<UpdateServicePackageDto>? Packages { get; set; }
     }

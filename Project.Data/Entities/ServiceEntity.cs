@@ -9,7 +9,7 @@ public class ServiceEntity
     public string? ImageUrl { get; set; } = null!;
     public string Description { get; set; } = null!;
     public string Location { get; set; } = null!;
-    public string? Deposit { get; set; } 
+    public string? Deposit { get; set; } = null!;
     public string? Latitude { get; set; }
     public string? Longitude { get; set; }
     public int Capacity { get; set; }

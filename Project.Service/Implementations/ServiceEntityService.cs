@@ -42,7 +42,7 @@ namespace Project.Service.Implementations
         }
         public async Task<IEnumerable<ServiceDto>> GetServicesByCategoryAsync(string category)
         {
-            return await _unitOfWork.Services.GetTableNoTracking().Where(x => x.Category.Name.Contains(category)||x.Name.Contains(category)).Select(ServiceToDto).ToListAsync();
+            return await _unitOfWork.Services.GetTableNoTracking().Where(x => x.Category.Name.Contains(category) || x.Name.Contains(category)).Select(ServiceToDto).ToListAsync();
         }
         public async Task<string> UpdateServiceAsync(ServiceEntity service)
         {
@@ -63,6 +63,11 @@ namespace Project.Service.Implementations
             Policies = s.Policies,
             CategoryName = s.Category.Name,
             ServiceCategoryId = s.ServiceCategoryId,
+            OwnerId = s.UserId,
+            OwnerName = s.User.FullName,
+            Deposit = s.Deposit,
+            Latitude = s.Latitude,
+            Longitude = s.Longitude,
             Features = s.Features.Select(f => new ServiceFeatureDto
             {
                 Id = f.Id,

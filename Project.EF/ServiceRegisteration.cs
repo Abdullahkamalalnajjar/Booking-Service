@@ -42,6 +42,7 @@ namespace Project.EF
             var jwtSettings = configuration.GetSection(nameof(JwtSettings)).Get<JwtSettings>(); // for direct access
             // mail settings
             services.Configure<MailSettings>(configuration.GetSection(nameof(MailSettings))); // for dependency injection
+            // Stripe settings
             services.Configure<StripeSettings>(configuration.GetSection(nameof(StripeSettings))); // for dependency injection
             services.AddAuthentication(x =>
             {

@@ -1,5 +1,4 @@
-﻿
-namespace Project.Core.Features.Authentication.Command.Handlers
+﻿namespace Project.Core.Features.Authentication.Command.Handlers
 {
     public class AuthenticatoinCommandHandler : ResponseHandler,
         IRequestHandler<SignInCommand, Response<AuthResponse>>,
@@ -11,6 +10,7 @@ namespace Project.Core.Features.Authentication.Command.Handlers
 
     {
         private readonly IEmailSender _emailSender;
+        private readonly IStripeService _stripeService;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IAuthService _authService;
@@ -19,9 +19,10 @@ namespace Project.Core.Features.Authentication.Command.Handlers
         private readonly IJwtProvider _jwtProvider;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public AuthenticatoinCommandHandler(IEmailSender emailSender, IUnitOfWork unitOfWork, IHttpContextAccessor httpContextAccessor, IAuthService authService, ILogger<AuthenticatoinCommandHandler> logger, IMapper mapper, IJwtProvider jwtProvider, UserManager<ApplicationUser> userManager)
+        public AuthenticatoinCommandHandler(IEmailSender emailSender, IStripeService stripeService, IUnitOfWork unitOfWork, IHttpContextAccessor httpContextAccessor, IAuthService authService, ILogger<AuthenticatoinCommandHandler> logger, IMapper mapper, IJwtProvider jwtProvider, UserManager<ApplicationUser> userManager)
         {
             _emailSender = emailSender;
+            _stripeService = stripeService;
             _unitOfWork = unitOfWork;
             _httpContextAccessor = httpContextAccessor;
             _authService = authService;
@@ -73,6 +74,25 @@ namespace Project.Core.Features.Authentication.Command.Handlers
 
                 // Send confirmation email
                 await SendConfirmationEmail(newUser, code);
+                // 👉 لو المستخدم ServiceProvider نعمل له Stripe Account
+                if (request.Role == "ServiceProvider")
+                {
+                    var stripeAccount = await _stripeService.CreateConnectAccountAsync(newUser.Email!);
+
+                    // نحفظ StripeAccountId في DB
+                    newUser.StripeAccountId = stripeAccount.Id;
+                    await _userManager.UpdateAsync(newUser);
+
+                    // ممكن كمان تبعت له Onboarding Link في إيميل
+                    var onboardingUrl = await _stripeService.GenerateAccountLinkAsync(
+                        stripeAccount.Id,
+                        "https://yourdomain.com/stripe/return",   // returnUrl
+                        "https://yourdomain.com/stripe/refresh"  // refreshUrl
+                    );
+                    await _emailSender.SendEmailAsync(newUser.Email, "Complete Your Stripe Setup",
+                      $"Please complete your payout setup by clicking this link: <a href='{onboardingUrl}'>Setup Stripe</a>");
+
+                }
 
                 // Commit the transaction
                 await transaction.CommitAsync();

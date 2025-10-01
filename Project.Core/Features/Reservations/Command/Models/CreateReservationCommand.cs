@@ -7,6 +7,7 @@ namespace Project.Core.Features.Reservations.Command.Models
         public DateTime ReservationDate { get; set; }
         public ReservationPeriod ReservationPeriod { get; set; }
         public int NumberOfGuests { get; set; }
+
         public PaymentMethod PaymentMethod { get; set; }
         public string? DiscountCoupon { get; set; }
         public int ServiceEntityId { get; set; }

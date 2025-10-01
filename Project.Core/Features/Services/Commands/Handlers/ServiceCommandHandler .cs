@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
-using Project.Core.Features.Services.Commands.Models;
+﻿using Project.Core.Features.Services.Commands.Models;
 
 public class CreateServiceCommandHandler(IServiceEntityService serviceEntityService, IMapper mapper) : ResponseHandler,
     IRequestHandler<CreateServiceCommand, Response<string>>,
@@ -58,6 +57,12 @@ public class CreateServiceCommandHandler(IServiceEntityService serviceEntityServ
 
             if (request.ServiceCategoryId.HasValue)
                 existing.ServiceCategoryId = request.ServiceCategoryId.Value;
+            if (!string.IsNullOrEmpty(request.Deposit))
+                existing.Deposit = request.Deposit;
+            if (!string.IsNullOrEmpty(request.Latitude))
+                existing.Latitude = request.Latitude;
+            if (!string.IsNullOrEmpty(request.Longitude))
+                existing.Longitude = request.Longitude;
 
             // --- Features: استبدال القديم بالجديد لو تم ارسال DTOs ---
             if (request.Features != null)
@@ -109,9 +114,9 @@ public class CreateServiceCommandHandler(IServiceEntityService serviceEntityServ
 
     public async Task<Response<string>> Handle(DeleteServiceCommand request, CancellationToken cancellationToken)
     {
-      var service= await _serviceEntityService.GetServiceEntityByIdForUpdateAsync(request.Id);
+        var service = await _serviceEntityService.GetServiceEntityByIdForUpdateAsync(request.Id);
         if (service == null) return BadRequest<string>("Service not found");
-        var result= await _serviceEntityService.DeleteServiceAsync(service);
+        var result = await _serviceEntityService.DeleteServiceAsync(service);
         if (result == true) return Success<string>("deleted Successfully");
         return BadRequest<string>("Failed to Delete service");
 

@@ -2,7 +2,7 @@
 
 namespace Project.Service.Implementations
 {
-    public class FileService : IFileService
+    public class UploadFileService : IUploadFileService
     {
         #region Fields
         private readonly IWebHostEnvironment _webHostEnvironment;
@@ -10,7 +10,7 @@ namespace Project.Service.Implementations
         #endregion
 
         #region Constructors
-        public FileService(IWebHostEnvironment webHostEnvironment, IHttpContextAccessor httpContextAccessor)
+        public UploadFileService(IWebHostEnvironment webHostEnvironment, IHttpContextAccessor httpContextAccessor)
         {
             _webHostEnvironment = webHostEnvironment;
             _httpContextAccessor = httpContextAccessor;
@@ -33,7 +33,7 @@ namespace Project.Service.Implementations
                         Directory.CreateDirectory(path);
                     }
 
-                    using (FileStream fileStream = File.Create(path + fileName))
+                    using (FileStream fileStream = System.IO.File.Create(path + fileName))
                     {
                         await file.CopyToAsync(fileStream);
                         await fileStream.FlushAsync();

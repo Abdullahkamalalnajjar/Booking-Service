@@ -10,7 +10,9 @@
         public string? Policies { get; set; }
         public int ServiceCategoryId { get; set; }
         public string UserId { get; set; } = null!;
-
+        public string? Deposit { get; set; } = null!;
+        public string? Latitude { get; set; }
+        public string? Longitude { get; set; }
         public List<CreateServiceFeatureDto>? Features { get; set; }
         public List<CreateServicePackageDto>? Packages { get; set; }
     }

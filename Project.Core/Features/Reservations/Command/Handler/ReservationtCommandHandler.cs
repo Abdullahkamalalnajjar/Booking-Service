@@ -62,10 +62,10 @@ namespace Project.Core.Features.Reservations.Command.Handler
                     oldReservation.DiscountCoupon = request.DiscountCoupon;
 
                 // ✅ لو الباكجات مبعوتة، ساعتها فقط نعدل
-               if (request.Packages != null && request.Packages.Any())
+                if (request.Packages != null && request.Packages.Any())
                 {
                     var allowServicePackageIds = await _unitOfWork.ServicePackages
-                        .GetTableNoTracking()
+                        .GetTableNoTracking().Where(x => x.ServiceId.Equals(oldReservation.ServiceEntityId))
                         .Select(x => x.Id)
                         .ToListAsync(cancellationToken);
 
@@ -77,9 +77,9 @@ namespace Project.Core.Features.Reservations.Command.Handler
                     var oldPackages = _unitOfWork.ReservationPackages
                         .GetTableAsTracking()
                         .Where(x => x.ReservationId == oldReservation.Id)
-                        .ToList();
+                        .ExecuteDeleteAsync();
 
-                    _unitOfWork.ReservationPackages.DeleteRange(oldPackages);
+                    //   _unitOfWork.ReservationPackages.DeleteRange(oldPackages);
 
                     // إضافة الباكجات الجديدة
                     var newPackages = request.Packages.Select(p => new ReservationPackage
@@ -89,14 +89,14 @@ namespace Project.Core.Features.Reservations.Command.Handler
                     }).ToList();
 
                     await _unitOfWork.ReservationPackages.AddRangeAsync(newPackages);
-                   
+
                 }
 
                 // ✅ تحديث وقت آخر تعديل
                 oldReservation.UpdatedAt = DateTime.UtcNow;
                 await _unitOfWork.CompeleteAsync();
                 var result = await _reservationService.UpdateReservationAsync(oldReservation);
-               
+
                 return result == true
                     ? Success("Reservation updated successfully.")
                     : BadRequest<string>("Failed to update reservation.");
