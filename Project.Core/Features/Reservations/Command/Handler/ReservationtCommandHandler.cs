@@ -1,30 +1,50 @@
 ﻿using Project.Core.Features.Reservations.Command.Models;
+using Project.Data.Enum;
 
 namespace Project.Core.Features.Reservations.Command.Handler
 {
-    public class ReservationtCommandHandler(IReservationService reservationService, IUnitOfWork unitOfWork, IMapper mapper) : ResponseHandler,
-        IRequestHandler<CreateReservationCommand, Response<string>>,
+    public class ReservationtCommandHandler(IReservationService reservationService, IStripeService stripeService, IUnitOfWork unitOfWork, IMapper mapper) : ResponseHandler,
+        IRequestHandler<CreateReservationCommand, Response<object>>,
         IRequestHandler<UpdateReservationCommand, Response<string>>,
         IRequestHandler<DeleteReservationCommand, Response<string>>
     {
         private readonly IReservationService _reservationService = reservationService;
+        private readonly IStripeService _stripeService = stripeService;
         private readonly IUnitOfWork _unitOfWork = unitOfWork;
         private readonly IMapper _mapper = mapper;
         #region CreateReservation
-        public async Task<Response<string>> Handle(CreateReservationCommand request, CancellationToken cancellationToken)
+        public async Task<Response<object>> Handle(CreateReservationCommand request, CancellationToken cancellationToken)
         {
+            string? SessionUrl = null!;
             #region  Check if the service package exists  
             var allowServicePackageIds = await _unitOfWork.ServicePackages.GetTableNoTracking().Where(x => x.ServiceId == request.ServiceEntityId).Select(x => x.Id).ToListAsync();
             if (request.Packages.Except(allowServicePackageIds).ToList().Any())
-                return NotFound<string>("One or more service packages do not exist");
+                return NotFound<object>("One or more service packages do not exist");
             #endregion      
             var reservationMapping = _mapper.Map<Reservation>(request);
-            var reservation = await _reservationService.CreateReservationAsync(reservationMapping, cancellationToken);
-            if (reservation == true) return Success<string>("Create Successfly");
-            return NotFound<string>("Faild to Create");
+
+            var reservationId = await _reservationService.CreateReservationAsync(reservationMapping, cancellationToken);
+            #region
+            if (request.PaymentMethod == PaymentMethod.Card)
+            {
+                var reservationWithDetails = await _unitOfWork.reservationRepository.GetTableNoTracking()
+                    .Include(r => r.ServiceEntity)
+                    .ThenInclude(s => s.User)
+                    .FirstOrDefaultAsync(r => r.Id == reservationId);
+                SessionUrl = await _stripeService.CreateCheckoutSessionAsync(reservationWithDetails.Id, reservationWithDetails.ServiceEntity.User.FullName, reservationWithDetails.ServiceEntity.Price, reservationWithDetails.ServiceEntity.User.StripeAccountId!);
+            }
+            #endregion
+            var response = new
+            {
+                StatusCode = 201,
+                Message = "Reservation created successfully",
+                PaymentMethod = request.PaymentMethod,
+                CheckoutUrl = SessionUrl
+            };
+            if (reservationId > 0) return Success<object>(response);
+            return BadRequest<object>("Faild to Create");
         }
         #endregion
-
         #region DeleteReservation
         public async Task<Response<string>> Handle(DeleteReservationCommand request, CancellationToken cancellationToken)
         {
@@ -34,8 +54,6 @@ namespace Project.Core.Features.Reservations.Command.Handler
             return NotFound<string>("Faild to Delete");
         }
         #endregion
-
-
         #region UpdateReservation
         public async Task<Response<string>> Handle(UpdateReservationCommand request, CancellationToken cancellationToken)
         {
@@ -107,10 +125,6 @@ namespace Project.Core.Features.Reservations.Command.Handler
             }
         }
         #endregion
-
-
-
-
 
     }
 }

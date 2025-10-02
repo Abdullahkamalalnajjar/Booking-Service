@@ -16,11 +16,11 @@ namespace Project.Service.Implementations
             return true;
         }
 
-        public async Task<bool> CreateReservationAsync(Reservation reservation, CancellationToken cancellationToken)
+        public async Task<int> CreateReservationAsync(Reservation reservation, CancellationToken cancellationToken)
         {
-            await _unitOfWork.reservationRepository.AddAsync(reservation, cancellationToken);
+            var createReservation = await _unitOfWork.reservationRepository.AddAsync(reservation, cancellationToken);
             await _unitOfWork.CompeleteAsync();
-            return true;
+            return createReservation.Id;
         }
 
         public async Task<bool> UpdateReservationAsync(Reservation reservation)
@@ -73,6 +73,7 @@ namespace Project.Service.Implementations
             PaymentMethod = s.PaymentMethod.ToString(),
             DiscountCoupon = s.DiscountCoupon,
             ServiceId = s.ServiceEntityId,
+            IsPaid = s.IsPaid,
             ClientId = s.ClientId,
             ClientName = s.Client.FullName,
             Service = new ServiceDto

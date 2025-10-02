@@ -2,7 +2,7 @@
 
 namespace Project.Core.Features.Reservations.Command.Models
 {
-    public class CreateReservationCommand : IRequest<Response<string>>
+    public class CreateReservationCommand : IRequest<Response<object>>
     {
         public DateTime ReservationDate { get; set; }
         public ReservationPeriod ReservationPeriod { get; set; }

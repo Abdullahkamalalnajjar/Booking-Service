@@ -9,6 +9,7 @@
         public string PaymentMethod { get; set; }
         public string? DiscountCoupon { get; set; }
         public int ServiceId { get; set; }
+        public bool IsPaid { get; set; }
         public ServiceDto Service { get; set; }
         public string ClientId { get; set; }
         public string ClientName { get; set; }

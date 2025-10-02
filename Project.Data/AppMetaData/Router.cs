@@ -152,6 +152,11 @@
             public const string Paginated = Prefix + "Paginated";
             public const string GetReservationsForClient = Prefix + "GetReservationsForClient/{clientId}";
         }
+        public static class StripeRouting
+        {
+            private const string Prefix = Rule + "/" + "Stripe/";
+            public const string Webhook = Prefix + "Webhook";
+        }
 
     }
 }

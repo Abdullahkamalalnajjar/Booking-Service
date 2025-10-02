@@ -1,12 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Project.Api.Configurations.Swagger;
-using Project.Api.Configurations.Swagger;
 using Project.Core;
 using Project.Core.Middleware;
-using Project.Core.Middleware;
 using Project.EF;
-using Project.EF;
-using Project.Service;
 using Project.Service;
 using Project.Service.Implementations;
 

@@ -2,7 +2,7 @@
 {
     public interface IReservationService
     {
-        Task<bool> CreateReservationAsync(Reservation reservation, CancellationToken cancellationToken);
+        Task<int> CreateReservationAsync(Reservation reservation, CancellationToken cancellationToken);
         Task<bool> UpdateReservationAsync(Reservation reservation);
         Task<bool> DeleteReservationAsync(Reservation reservation);
         Task<bool> CancelReservationAsync(int reservationId);

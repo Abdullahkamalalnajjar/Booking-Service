@@ -12,6 +12,9 @@ namespace Project.Data.Entities
         public string? DiscountCoupon { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime? UpdatedAt { get; set; }
+        public bool IsPaid { get; set; } = false;
+        public string? CheckoutSessionId { get; set; }
+        public string? PaymentIntentId { get; set; }
         public int ServiceEntityId { get; set; }
         public ServiceEntity ServiceEntity { get; set; }
         public string ClientId { get; set; } = null!;
