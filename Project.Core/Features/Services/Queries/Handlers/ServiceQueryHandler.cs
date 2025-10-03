@@ -1,11 +1,4 @@
-﻿using AutoMapper;
-using MediatR;
-using Project.Core.Bases;
-using Project.Core.Features.Services.Queries.Models;
-using Project.Service.Abstracts;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using Project.Core.Features.Services.Queries.Models;
 
 namespace Project.Core.Features.Services.Queries.Handlers
 {

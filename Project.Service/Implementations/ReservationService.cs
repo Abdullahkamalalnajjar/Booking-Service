@@ -1,4 +1,5 @@
-﻿using System.Linq.Expressions;
+﻿using Project.Data.Enum;
+using System.Linq.Expressions;
 
 namespace Project.Service.Implementations
 {
@@ -62,6 +63,43 @@ namespace Project.Service.Implementations
         public async Task<Reservation> GetById(int reservationId)
         {
             return await _unitOfWork.reservationRepository.GetByIdAsync(reservationId);
+        }
+
+        public async Task<bool> PayWithWalletAsync(int reservationId)
+        {
+            // Get reservation
+            var reservation = await _unitOfWork.reservationRepository.GetTableAsTracking().Where(x => x.Id == reservationId).Include(x => x.ServiceEntity).FirstOrDefaultAsync();
+            if (reservation == null)
+                return false;
+            // get client wallet
+            var wallet = await _unitOfWork.Wallets.GetTableAsTracking().Where(x => x.UserId.Equals(reservation.ClientId)).FirstOrDefaultAsync();
+            if (wallet == null)
+                return false;
+            // get service price
+            if (wallet.Balance >= reservation.ServiceEntity.Deposit)
+            {
+                wallet.Balance -= (decimal)reservation.ServiceEntity.Deposit;
+                reservation.IsPaid = true;
+                _unitOfWork.Wallets.Update(wallet);
+                _unitOfWork.reservationRepository.Update(reservation);
+                // create wallet transaction
+                var walletTransaction = new WalletTransaction
+                {
+                    WalletId = wallet.Id,
+                    Amount = (decimal)reservation.ServiceEntity.Deposit,
+                    Status = WalletTransactionStatus.Paid,
+                    Type = WalletTransactionType.Deposit,
+                    CreatedAt = DateTime.UtcNow,
+                    PaidAt = DateTime.UtcNow,
+                    OrderId = 0, // not applicable here
+                    MerchantOrderId = null // not applicable here
+                };
+                await _unitOfWork.WalletTransactions.AddAsync(walletTransaction, CancellationToken.None);
+                await _unitOfWork.CompeleteAsync();
+                return true;
+            }
+            return false;
+
         }
 
         private static readonly Expression<Func<Reservation, ReservationDto>> ReservationDto = s => new ReservationDto

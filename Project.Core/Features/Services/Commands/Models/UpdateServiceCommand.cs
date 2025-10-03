@@ -11,7 +11,7 @@ namespace Project.Core.Features.Services.Commands.Models
         public decimal? Price { get; set; }
         public string? Policies { get; set; }
         public int? ServiceCategoryId { get; set; }
-        public string? Deposit { get; set; } = null!;
+        public decimal? Deposit { get; set; } = null!;
         public string? Latitude { get; set; }
         public string? Longitude { get; set; }
         public ICollection<UpdateServiceFeatureDto>? Features { get; set; }
@@ -27,7 +27,7 @@ namespace Project.Core.Features.Services.Commands.Models
 
     public class UpdateServicePackageDto
     {
-        public int Id { get; set; } 
+        public int Id { get; set; }
         public string? Title { get; set; }
         public decimal? Price { get; set; }
         public List<UpdateServicePackageItemDto>? Items { get; set; }
@@ -35,7 +35,7 @@ namespace Project.Core.Features.Services.Commands.Models
 
     public class UpdateServicePackageItemDto
     {
-        public int Id { get; set; } 
+        public int Id { get; set; }
         public string? Name { get; set; }
     }
 }

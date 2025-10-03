@@ -45,7 +45,7 @@ namespace Project.Service.Implementations
         }
 
         #region
-        public async Task<string> CreateCheckoutSessionAsync(int requestId, string OwnerName, decimal price, string stripeAccountId)
+        public async Task<string> CreateCheckoutSessionAsync(int requestId, string OwnerName, decimal? price, string stripeAccountId)
         {
             StripeConfiguration.ApiKey = setting.SecretKey;
 

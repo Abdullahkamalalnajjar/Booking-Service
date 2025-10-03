@@ -3,16 +3,16 @@
     public class ServiceDto
     {
         public int Id { get; set; }
-        public string Name { get; set; } = null!;
-        public string ImageUrl { get; set; } = null!;
-        public string Description { get; set; } = null!;
-        public string Location { get; set; } = null!;
+        public string Name { get; set; } 
+        public string ImageUrl { get; set; } 
+        public string Description { get; set; }
+        public string Location { get; set; } 
         public int Capacity { get; set; }
         public decimal Price { get; set; }
-        public string Policies { get; set; } = null!;
+        public string Policies { get; set; } 
         public int ServiceCategoryId { get; set; }
         public string CategoryName { get; set; }
-        public string? Deposit { get; set; } = null!;
+        public decimal? Deposit { get; set; } 
         public string? Latitude { get; set; }
         public string? Longitude { get; set; }
         public string OwnerId { get; set; }

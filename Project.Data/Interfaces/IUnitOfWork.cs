@@ -11,6 +11,8 @@
         IVerificationRequestRepository verificationRequestRepository { get; }
         IReservationRepository reservationRepository { get; }
         IReservationPackageRespository ReservationPackages { get; }
+        IWalletTransactionRepository WalletTransactions { get; }
+        IWalletRepository Wallets { get; }
         Task<int> CompeleteAsync();
         Task<IDbContextTransaction> BeginTransactionAsync();
     }

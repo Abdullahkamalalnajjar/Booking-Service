@@ -18,7 +18,11 @@ namespace Project.Service
             services.AddTransient<IVerificationRequestService, VerificationRequestService>();
             services.AddTransient<IReservationService, ReservationService>();
             services.AddTransient<IStripeService, StripeService>();
-
+            services.AddHttpClient<PaymobService>(client =>
+            {
+                client.Timeout = TimeSpan.FromSeconds(60);
+            });
+            services.AddScoped<PaymobService>();
 
             return services;
         }

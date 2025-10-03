@@ -93,6 +93,14 @@
                       $"Please complete your payout setup by clicking this link: <a href='{onboardingUrl}'>Setup Stripe</a>");
 
                 }
+                // Create a default wallet for the user 
+                var wallet = new Wallet
+                {
+                    UserId = newUser.Id,
+                    Balance = 0,
+                };
+                await _unitOfWork.Wallets.AddAsync(wallet, cancellationToken);
+                await _unitOfWork.CompeleteAsync();
 
                 // Commit the transaction
                 await transaction.CommitAsync();

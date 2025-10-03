@@ -3,6 +3,7 @@
     public interface IReservationService
     {
         Task<int> CreateReservationAsync(Reservation reservation, CancellationToken cancellationToken);
+        Task<bool> PayWithWalletAsync(int reservationId);
         Task<bool> UpdateReservationAsync(Reservation reservation);
         Task<bool> DeleteReservationAsync(Reservation reservation);
         Task<bool> CancelReservationAsync(int reservationId);

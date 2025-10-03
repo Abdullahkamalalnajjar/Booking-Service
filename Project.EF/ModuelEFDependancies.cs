@@ -11,7 +11,8 @@ namespace Project.EF
             services.AddTransient<IVerificationRequestRepository, VerificationRequestRepository>();
             services.AddTransient<IReservationRepository, ReservationRepository>();
             services.AddTransient<IReservationPackageRespository, ReservationPackageRespository>();
-
+            services.AddTransient<IWalletRepository, WalletRepository>();
+            services.AddTransient<IWalletTransactionRepository, WalletTransactionRepository>();
 
             return services;
         }

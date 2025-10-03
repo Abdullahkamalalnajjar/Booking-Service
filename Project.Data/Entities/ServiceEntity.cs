@@ -9,7 +9,7 @@ public class ServiceEntity
     public string? ImageUrl { get; set; } = null!;
     public string Description { get; set; } = null!;
     public string Location { get; set; } = null!;
-    public string? Deposit { get; set; } = null!;
+    public decimal? Deposit { get; set; } = null!;
     public string? Latitude { get; set; }
     public string? Longitude { get; set; }
     public int Capacity { get; set; }
@@ -23,6 +23,6 @@ public class ServiceEntity
     public ICollection<ServiceImage>? Images { get; set; } = new List<ServiceImage>();
     public ICollection<ServiceFeature> Features { get; set; } = new List<ServiceFeature>();
     public ICollection<ServicePackage> Packages { get; set; } = new List<ServicePackage>();
-    public ICollection<ServiceReview> ?Reviews { get; set; } = new List<ServiceReview>();
-    public ICollection<Reservation>Reservations { get; set; } = new List<Reservation>();
+    public ICollection<ServiceReview>? Reviews { get; set; } = new List<ServiceReview>();
+    public ICollection<Reservation> Reservations { get; set; } = new List<Reservation>();
 }

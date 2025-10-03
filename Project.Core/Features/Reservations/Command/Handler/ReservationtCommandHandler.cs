@@ -24,14 +24,22 @@ namespace Project.Core.Features.Reservations.Command.Handler
             var reservationMapping = _mapper.Map<Reservation>(request);
 
             var reservationId = await _reservationService.CreateReservationAsync(reservationMapping, cancellationToken);
-            #region
+            #region Create Stripe Checkout Session  if the payment method is Card
             if (request.PaymentMethod == PaymentMethod.Card)
             {
                 var reservationWithDetails = await _unitOfWork.reservationRepository.GetTableNoTracking()
                     .Include(r => r.ServiceEntity)
                     .ThenInclude(s => s.User)
                     .FirstOrDefaultAsync(r => r.Id == reservationId);
-                SessionUrl = await _stripeService.CreateCheckoutSessionAsync(reservationWithDetails.Id, reservationWithDetails.ServiceEntity.User.FullName, reservationWithDetails.ServiceEntity.Price, reservationWithDetails.ServiceEntity.User.StripeAccountId!);
+                SessionUrl = await _stripeService.CreateCheckoutSessionAsync(reservationWithDetails.Id, reservationWithDetails.ServiceEntity.User.FullName, reservationWithDetails.ServiceEntity.Deposit, reservationWithDetails.ServiceEntity.User.StripeAccountId!);
+            }
+            #endregion
+            #region
+            if (request.PaymentMethod == PaymentMethod.AppWallet)
+            {
+                var result = await _reservationService.PayWithWalletAsync(reservationId);
+                if (!result)
+                    return BadRequest<object>("فشل في عملية الدفع أو عشان انت فقير -إشحن يافقير");
             }
             #endregion
             var response = new

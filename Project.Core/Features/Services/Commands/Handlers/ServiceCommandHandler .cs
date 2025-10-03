@@ -57,7 +57,7 @@ public class CreateServiceCommandHandler(IServiceEntityService serviceEntityServ
 
             if (request.ServiceCategoryId.HasValue)
                 existing.ServiceCategoryId = request.ServiceCategoryId.Value;
-            if (!string.IsNullOrEmpty(request.Deposit))
+            if (request.Deposit.HasValue)
                 existing.Deposit = request.Deposit;
             if (!string.IsNullOrEmpty(request.Latitude))
                 existing.Latitude = request.Latitude;

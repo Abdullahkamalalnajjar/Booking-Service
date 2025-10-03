@@ -12,7 +12,8 @@
         public IVerificationRequestRepository verificationRequestRepository { get; private set; }
         public IReservationRepository reservationRepository { get; private set; }
         public IReservationPackageRespository ReservationPackages { get; private set; }
-
+        public IWalletTransactionRepository WalletTransactions { get; private set; }
+        public IWalletRepository Wallets { get; private set; }
 
         public UnitOfWork(ApplicationDbContext context)
         {
@@ -26,6 +27,8 @@
             verificationRequestRepository = new VerificationRequestRepository(_context);
             reservationRepository = new ReservationRepository(_context);
             ReservationPackages = new ReservationPackageRespository(_context);
+            WalletTransactions = new WalletTransactionRepository(_context);
+            Wallets = new WalletRepository(_context);
         }
 
         public async Task<int> CompeleteAsync()
