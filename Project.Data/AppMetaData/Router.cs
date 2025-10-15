@@ -152,6 +152,19 @@
             public const string Paginated = Prefix + "Paginated";
             public const string GetReservationsForClient = Prefix + "GetReservationsForClient/{clientId}";
         }
+
+
+        public static class FavoritesRouting
+        {
+            private const string Prefix = Rule + "/" + "Favorites/";
+            public const string List = Prefix + ListRoute;
+            public const string GetById = Prefix + SingleRoute;
+            public const string Create = Prefix + "Create";
+            public const string Edit = Prefix + "Edit";
+            public const string Delete = Prefix + "Remove/{id}/{serviceId}";
+            public const string Paginated = Prefix + "Paginated";
+            public const string GetReservationsForClient = Prefix + "GetReservationsForClient/{clientId}";
+        }
         public static class StripeRouting
         {
             private const string Prefix = Rule + "/" + "Stripe/";

@@ -13,7 +13,7 @@ namespace Project.EF
             services.AddTransient<IReservationPackageRespository, ReservationPackageRespository>();
             services.AddTransient<IWalletRepository, WalletRepository>();
             services.AddTransient<IWalletTransactionRepository, WalletTransactionRepository>();
-
+            services.AddTransient<IFavoriteRespository, FavoriteRespository>();
             return services;
         }
     }

@@ -14,6 +14,9 @@
         public IReservationPackageRespository ReservationPackages { get; private set; }
         public IWalletTransactionRepository WalletTransactions { get; private set; }
         public IWalletRepository Wallets { get; private set; }
+        public IFavoriteRespository favoritesService { get; private set; }
+
+      
 
         public UnitOfWork(ApplicationDbContext context)
         {
@@ -29,6 +32,7 @@
             ReservationPackages = new ReservationPackageRespository(_context);
             WalletTransactions = new WalletTransactionRepository(_context);
             Wallets = new WalletRepository(_context);
+           favoritesService = new FavoriteRespository(_context);
         }
 
         public async Task<int> CompeleteAsync()

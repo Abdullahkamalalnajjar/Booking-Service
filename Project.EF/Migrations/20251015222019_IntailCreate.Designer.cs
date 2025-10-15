@@ -12,8 +12,8 @@ using Project.EF;
 namespace Project.EF.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20251001174026_addCheckoutAndPaymentintentid")]
-    partial class addCheckoutAndPaymentintentid
+    [Migration("20251015222019_IntailCreate")]
+    partial class IntailCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -463,6 +463,9 @@ namespace Project.EF.Migrations
                     b.Property<string>("DiscountCoupon")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsPaid")
+                        .HasColumnType("bit");
+
                     b.Property<int>("NumberOfGuests")
                         .HasColumnType("int");
 
@@ -574,8 +577,8 @@ namespace Project.EF.Migrations
                     b.Property<int>("Capacity")
                         .HasColumnType("int");
 
-                    b.Property<string>("Deposit")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<decimal?>("Deposit")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -745,6 +748,93 @@ namespace Project.EF.Migrations
                     b.HasIndex("ServiceId");
 
                     b.ToTable("ServiceReviews");
+                });
+
+            modelBuilder.Entity("Project.Data.Entities.UserFavorite", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ServiceId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ServiceId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Favorites", (string)null);
+                });
+
+            modelBuilder.Entity("Project.Data.Entities.Wallet", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("Balance")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Wallet");
+                });
+
+            modelBuilder.Entity("Project.Data.Entities.WalletTransaction", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("MerchantOrderId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long>("OrderId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("PaidAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("WalletId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("WalletId");
+
+                    b.ToTable("WalletTransaction");
                 });
 
             modelBuilder.Entity("Project.Data.Entities.chat.Conversation", b =>
@@ -1068,6 +1158,47 @@ namespace Project.EF.Migrations
                     b.Navigation("Service");
                 });
 
+            modelBuilder.Entity("Project.Data.Entities.UserFavorite", b =>
+                {
+                    b.HasOne("Project.Data.Entities.ServiceEntity", "Service")
+                        .WithMany("favorites")
+                        .HasForeignKey("ServiceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Project.Data.Entities.ApplicationUser", "User")
+                        .WithMany("favorites")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Service");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Project.Data.Entities.Wallet", b =>
+                {
+                    b.HasOne("Project.Data.Entities.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Project.Data.Entities.WalletTransaction", b =>
+                {
+                    b.HasOne("Project.Data.Entities.Wallet", "Wallet")
+                        .WithMany("Transactions")
+                        .HasForeignKey("WalletId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Wallet");
+                });
+
             modelBuilder.Entity("Project.Data.Entities.chat.Message", b =>
                 {
                     b.HasOne("Project.Data.Entities.chat.Conversation", "Conversation")
@@ -1093,6 +1224,8 @@ namespace Project.EF.Migrations
             modelBuilder.Entity("Project.Data.Entities.ApplicationUser", b =>
                 {
                     b.Navigation("RefreshTokens");
+
+                    b.Navigation("favorites");
                 });
 
             modelBuilder.Entity("Project.Data.Entities.Reservation", b =>
@@ -1113,6 +1246,8 @@ namespace Project.EF.Migrations
                     b.Navigation("Reviews");
 
                     b.Navigation("VerificationRequest");
+
+                    b.Navigation("favorites");
                 });
 
             modelBuilder.Entity("Project.Data.Entities.ServicePackage", b =>
@@ -1120,6 +1255,11 @@ namespace Project.EF.Migrations
                     b.Navigation("Items");
 
                     b.Navigation("ReservationPackages");
+                });
+
+            modelBuilder.Entity("Project.Data.Entities.Wallet", b =>
+                {
+                    b.Navigation("Transactions");
                 });
 
             modelBuilder.Entity("Project.Data.Entities.chat.Conversation", b =>

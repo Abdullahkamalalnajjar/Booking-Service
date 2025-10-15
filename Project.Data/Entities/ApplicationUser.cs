@@ -12,5 +12,6 @@ namespace Project.Data.Entities
         public string? StripeAccountId { get; set; }
         public ServiceCategory? Service { get; set; }
         public List<RefreshToken>? RefreshTokens { get; set; } = new List<RefreshToken>();
+        public ICollection<UserFavorite>? favorites { get; set; } = new List<UserFavorite>();
     }
 }

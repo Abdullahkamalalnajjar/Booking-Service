@@ -105,7 +105,7 @@ namespace Project.Service.Implementations
            PassportIssueDate = s.PassportIssueDate,
            PassportNumber = s.PassportNumber,
            ServiceId = s.ServiceId,
-           Status = s.Status,
+           Status = s.Status,   
            VerifiedAt = s.VerifiedAt,
            
 

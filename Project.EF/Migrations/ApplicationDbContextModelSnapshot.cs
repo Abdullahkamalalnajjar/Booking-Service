@@ -747,6 +747,30 @@ namespace Project.EF.Migrations
                     b.ToTable("ServiceReviews");
                 });
 
+            modelBuilder.Entity("Project.Data.Entities.UserFavorite", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ServiceId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ServiceId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Favorites", (string)null);
+                });
+
             modelBuilder.Entity("Project.Data.Entities.Wallet", b =>
                 {
                     b.Property<int>("Id")
@@ -1131,6 +1155,25 @@ namespace Project.EF.Migrations
                     b.Navigation("Service");
                 });
 
+            modelBuilder.Entity("Project.Data.Entities.UserFavorite", b =>
+                {
+                    b.HasOne("Project.Data.Entities.ServiceEntity", "Service")
+                        .WithMany("favorites")
+                        .HasForeignKey("ServiceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Project.Data.Entities.ApplicationUser", "User")
+                        .WithMany("favorites")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Service");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Project.Data.Entities.Wallet", b =>
                 {
                     b.HasOne("Project.Data.Entities.ApplicationUser", "User")
@@ -1178,6 +1221,8 @@ namespace Project.EF.Migrations
             modelBuilder.Entity("Project.Data.Entities.ApplicationUser", b =>
                 {
                     b.Navigation("RefreshTokens");
+
+                    b.Navigation("favorites");
                 });
 
             modelBuilder.Entity("Project.Data.Entities.Reservation", b =>
@@ -1198,6 +1243,8 @@ namespace Project.EF.Migrations
                     b.Navigation("Reviews");
 
                     b.Navigation("VerificationRequest");
+
+                    b.Navigation("favorites");
                 });
 
             modelBuilder.Entity("Project.Data.Entities.ServicePackage", b =>

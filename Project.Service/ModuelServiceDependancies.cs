@@ -17,6 +17,7 @@ namespace Project.Service
             services.AddTransient<IServiceEntityService, ServiceEntityService>();
             services.AddTransient<IVerificationRequestService, VerificationRequestService>();
             services.AddTransient<IReservationService, ReservationService>();
+            services.AddTransient<IFavoriteServices, FavoriteServices>();
             services.AddTransient<IStripeService, StripeService>();
             services.AddHttpClient<PaymobService>(client =>
             {

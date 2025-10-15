@@ -13,6 +13,7 @@
         IReservationPackageRespository ReservationPackages { get; }
         IWalletTransactionRepository WalletTransactions { get; }
         IWalletRepository Wallets { get; }
+        IFavoriteRespository favoritesService { get; }
         Task<int> CompeleteAsync();
         Task<IDbContextTransaction> BeginTransactionAsync();
     }

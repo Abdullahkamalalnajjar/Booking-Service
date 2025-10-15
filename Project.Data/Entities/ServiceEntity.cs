@@ -22,6 +22,7 @@ public class ServiceEntity
     public VerificationRequest? VerificationRequest { get; set; }
     public ICollection<ServiceImage>? Images { get; set; } = new List<ServiceImage>();
     public ICollection<ServiceFeature> Features { get; set; } = new List<ServiceFeature>();
+    public ICollection<UserFavorite> favorites { get; set; } = new List<UserFavorite>();
     public ICollection<ServicePackage> Packages { get; set; } = new List<ServicePackage>();
     public ICollection<ServiceReview>? Reviews { get; set; } = new List<ServiceReview>();
     public ICollection<Reservation> Reservations { get; set; } = new List<Reservation>();
