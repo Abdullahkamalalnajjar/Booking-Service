@@ -747,6 +747,34 @@ namespace Project.EF.Migrations
                     b.ToTable("ServiceReviews");
                 });
 
+            modelBuilder.Entity("Project.Data.Entities.ServicesCoupon", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("Discount")
+                        .HasColumnType("float");
+
+                    b.Property<DateTime>("ExpiryDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("ServiceId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ServiceId");
+
+                    b.ToTable("Coupons");
+                });
+
             modelBuilder.Entity("Project.Data.Entities.UserFavorite", b =>
                 {
                     b.Property<int>("Id")
@@ -1148,6 +1176,17 @@ namespace Project.EF.Migrations
                 {
                     b.HasOne("Project.Data.Entities.ServiceEntity", "Service")
                         .WithMany("Reviews")
+                        .HasForeignKey("ServiceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Service");
+                });
+
+            modelBuilder.Entity("Project.Data.Entities.ServicesCoupon", b =>
+                {
+                    b.HasOne("Project.Data.Entities.ServiceEntity", "Service")
+                        .WithMany()
                         .HasForeignKey("ServiceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

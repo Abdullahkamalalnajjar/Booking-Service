@@ -14,6 +14,7 @@ namespace Project.EF
             services.AddTransient<IWalletRepository, WalletRepository>();
             services.AddTransient<IWalletTransactionRepository, WalletTransactionRepository>();
             services.AddTransient<IFavoriteRespository, FavoriteRespository>();
+            services.AddTransient<ICouponRepository, CouponRepository>();
             return services;
         }
     }

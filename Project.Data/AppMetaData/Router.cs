@@ -170,6 +170,12 @@
             private const string Prefix = Rule + "/" + "Stripe/";
             public const string Webhook = Prefix + "Webhook";
         }
+        public static class CouponRouting
+        {
+            private const string Prefix = Rule + "/" + "Coupon/";
+            public const string Generate = Prefix + "Generate";
+            public const string List = Prefix + ListRoute;
+        }
 
     }
 }

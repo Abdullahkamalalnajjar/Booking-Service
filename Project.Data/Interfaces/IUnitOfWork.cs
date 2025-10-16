@@ -14,6 +14,7 @@
         IWalletTransactionRepository WalletTransactions { get; }
         IWalletRepository Wallets { get; }
         IFavoriteRespository favoritesService { get; }
+        ICouponRepository Coupons { get; }
         Task<int> CompeleteAsync();
         Task<IDbContextTransaction> BeginTransactionAsync();
     }

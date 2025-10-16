@@ -4,10 +4,8 @@ using Project.Data.Entities.verifyRequst;
 
 namespace Project.EF
 {
-    public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IHttpContextAccessor httpContextAccessor)
-        : IdentityDbContext<ApplicationUser, ApplicationRole, string>(options)
+    public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : IdentityDbContext<ApplicationUser, ApplicationRole, string>(options)
     {
-        private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -32,6 +30,7 @@ namespace Project.EF
         public DbSet<Message> Messages { get; set; }
         public DbSet<UserFavorite> UserFavorites { get; set; }
         public DbSet<VerificationRequest> VerificationRequests { get; set; }
+        public DbSet<ServicesCoupon> Coupons { get; set; }
 
 
     }
